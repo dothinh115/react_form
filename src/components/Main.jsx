@@ -15,7 +15,6 @@ export default class Main extends Component {
             email: null
         },
         errors: {
-            masv: null,
             hoten: null,
             sdt: null,
             email: null
@@ -32,8 +31,7 @@ export default class Main extends Component {
 
     componentDidUpdate(preProps, preState) {
         if(preState.data !== this.state.data) {
-           let data = JSON.stringify(this.state.data);
-           localStorage.setItem("svData", data);
+           this.setLocalStorage();
         }
     }
 
@@ -47,15 +45,21 @@ export default class Main extends Component {
         }
     }
 
+    //lưu dữ liệu
+    setLocalStorage = () => {
+        let data = JSON.stringify(this.state.data);
+        localStorage.setItem("svData", data);
+    }
+
     dataForm = {
-        id: ["masv", "hoten", "sdt", "email"],
-        title: ["Mã sinh viên", "Họ và tên", "Số điện thoại", "Email"]
+        id: ["hoten", "sdt", "email"],
+        title: ["Họ và tên", "Số điện thoại", "Email"]
     }
 
     checkError = () => {
         const {add, errors} = this.state;
         for (let key in errors) {
-            if(add[key] === "" || errors[key] !== "") {
+            if(errors[key] !== "") {
                 return false;
             }
         }
@@ -73,12 +77,6 @@ export default class Main extends Component {
         let messageError = "";
         if(value === "") {
             messageError = "Không được bỏ trống";
-        }
-        else if(valid === "masv") {
-            let reg = /^[0-9]+$/;
-            if (!value.match(reg)) {
-                messageError = this.dataForm.title[this.dataForm.id.indexOf("masv")] + " chỉ được nhập số.";
-            }
         }
         else if(valid === "hoten") {
             let reg = "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
@@ -111,27 +109,28 @@ export default class Main extends Component {
         });
     }
 
+    randomId = maxNumber => {
+        let getRandomId = number => {
+            let randomId = Math.floor(Math.random() * number);
+            return randomId;
+        }
+        //lấy số random
+        let id = getRandomId(maxNumber);
+        //tìm xem trong mảng có trùng hay ko, nếu trùng thì tiếp tục gọi hàm lấy số random
+        while (this.state.data.find(item => item.id === id) !== undefined) {
+            id = getRandomId(maxNumber);
+        }
+        return id;
+    }
+
     btnClick = e => {
         e.preventDefault();
-        let randomId = maxNumber => {
-            let getRandomId = number => {
-                let randomId = Math.floor(Math.random() * number);
-                return randomId;
-            }
-            //lấy số random
-            let id = getRandomId(maxNumber);
-            //tìm xem trong mảng có trùng hay ko, nếu trùng thì tiếp tục gọi hàm lấy số random
-            while (this.state.data.find(item => item.id === id) !== undefined) {
-                id = getRandomId(maxNumber);
-            }
-            return id;
-        }
+        
         if(this.checkError()) {
             const {data, add} = this.state;
             this.setState({
                 data: [...data, {
-                    id: randomId(999999),
-                    masv: add.masv,
+                    masv: this.randomId(999999),
                     hoten: add.hoten,
                     sdt: add.sdt,
                     email: add.email
@@ -141,14 +140,14 @@ export default class Main extends Component {
         }
     }
 
-    deleteRow = id => {
-        let newData = this.state.data.filter((item) => item.id !== id);
+    deleteRow = masv => {
+        let newData = this.state.data.filter((item) => item.masv !== masv);
         if(this.state.searchRes.length === 0) {
             this.setState({
                 data: newData
             });
         }else {
-            let newSeachRes = this.state.searchRes.filter((item) => item.id !== id);
+            let newSeachRes = this.state.searchRes.filter((item) => item.masv !== masv);
             this.setState({
                 data: newData,
                 searchRes: newSeachRes
@@ -158,9 +157,9 @@ export default class Main extends Component {
 
     searchFunc = e => {
         e.preventDefault();
-        let value = e.target.value.trim().toLowerCase();
+        let value = e.target.value.trim();
         let {data} = this.state;
-        let searchRes = data.filter(item => item.hoten.toLowerCase().indexOf(value) !== -1);
+        let searchRes = data.filter(item => item.masv.toString().indexOf(value) !== -1);
         this.setState({
             searchRes
         });
@@ -171,7 +170,7 @@ export default class Main extends Component {
             <div className="container">
                 <Add inputChangeHandle={this.inputChangeHandle} btnClick={this.btnClick} state={this.state} dataForm={this.dataForm}/>
                 <Search searchFunc={this.searchFunc} />
-                <List dataForm={this.dataForm} mainData={this.state.data} deleteRow={this.deleteRow} searchRes={this.state.searchRes}/>
+                <List dataForm={this.dataForm} mainData={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.data} deleteRow={this.deleteRow}/>
             </div>
         )
     }

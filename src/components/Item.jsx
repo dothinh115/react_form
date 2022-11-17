@@ -1,11 +1,17 @@
-import React, { Component, PureComponent} from 'react'
+import { computeHeadingLevel } from '@testing-library/react';
+import React, { Component} from 'react'
 
-export default class Item extends PureComponent {
+export default class Item extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    if(nextProps.data === this.mainData) {
+      return true;
+    }
+    return false;
+  }
   render() {
-    const {mainData, deleteRow, searchRes} = this.props;
-    console.log(searchRes);
+    const {mainData, deleteRow} = this.props;
     return (
-      <tr style={{display: `${mainData.hoten !== searchRes.hoten ? "" : "none"}`}}>
+      <tr>
         <td>
           {mainData.masv}
         </td>
@@ -20,7 +26,7 @@ export default class Item extends PureComponent {
         </td>
         <td>
           <button className="btn btn-danger" onClick={e => {
-            deleteRow(mainData.id)
+            deleteRow(mainData.masv)
           }}>
             Xóa
           </button>
