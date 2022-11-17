@@ -82,12 +82,16 @@ export default class Main extends Component {
             let reg = "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
             if(!value.match(reg)) {
                 messageError = this.dataForm.title[this.dataForm.id.indexOf("hoten")] + " chỉ được nhập chữ.";
+                value = value.substr(0, value.length - 1);
+                e.target.value = value;
             }
         }
         else if(valid === "sdt") {
             let reg = /^[0-9]+$/;
             if(!value.match(reg)) {
                 messageError = this.dataForm.title[this.dataForm.id.indexOf("sdt")] + " chỉ được điền số.";
+                value = value.substr(0, value.length - 1);
+                e.target.value = value;
             }
         }
         else if(valid === "email") {
