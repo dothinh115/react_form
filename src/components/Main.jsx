@@ -63,6 +63,11 @@ export default class Main extends Component {
                 return false;
             }
         }
+        for (let key in add) {
+            if(add[key] === "") {
+                return false;
+            }
+        }
         return true;
     }
     
@@ -82,15 +87,19 @@ export default class Main extends Component {
             let reg = "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
             if(!value.match(reg)) {
                 messageError = this.dataForm.title[this.dataForm.id.indexOf("hoten")] + " chỉ được nhập chữ.";
-                value = value.substr(0, value.length - 1);
-                e.target.value = value;
+                e.target.value = value.replace(/[0-9]/g, "");
             }
         }
         else if(valid === "sdt") {
             let reg = /^[0-9]+$/;
             if(!value.match(reg)) {
                 messageError = this.dataForm.title[this.dataForm.id.indexOf("sdt")] + " chỉ được điền số.";
-                value = value.substr(0, value.length - 1);
+                for (let i in value.split("")) {
+                    if(isNaN(value.split("")[i])){
+                        value = value.split("").splice(i, 1);
+                        value = value.join("");
+                    }
+                }
                 e.target.value = value;
             }
         }
