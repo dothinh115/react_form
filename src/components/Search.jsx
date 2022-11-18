@@ -1,8 +1,28 @@
 import React, { Component } from 'react'
 
 export default class Search extends Component {
+    constructor(props) {
+      super(props)
+    
+      this.state = {
+         searchKeys: ""
+      }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(prevState.searchKeys !== this.state.searchKeys) {
+            this.props.searchFunc(this.state.searchKeys);
+        }
+    }
+
+    inputChangeHandel = e => {
+        let searchKeys = e.target.value;
+        this.setState({
+            searchKeys
+        });
+    }
+
     render() {
-        const {searchFunc} = this.props;
         return (
         <div>
             <form onSubmit={e => e.preventDefault()}>
@@ -13,7 +33,7 @@ export default class Search extends Component {
                         </label>
                     </div>
                     <div className="col-8">
-                        <input className="form-control" onChange={searchFunc} />
+                        <input className="form-control" onChange={this.inputChangeHandel} />
                     </div>
                     <div className="col-2">
                         <button className="btn btn-primary">

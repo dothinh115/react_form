@@ -96,7 +96,7 @@ export default class Item extends Component {
     if(this.state.valid){
       this.props.quickEditFunc(this.state.value);
       this.props.setEditFunc({
-        masv: ""
+        masv: null
       });
     }
   }
@@ -108,7 +108,8 @@ export default class Item extends Component {
       if(quickEdit.masv === mainData.masv) {
         return <input 
         data-id={id} 
-        type="text" 
+        type="text"
+        style={{width: "90%", margin: "0"}}  
         className={`form-control ${this.state.errors[id] && "is-invalid"}`} 
         defaultValue={contain} 
         onInput={this.quickEditHandle}
@@ -121,7 +122,7 @@ export default class Item extends Component {
     let buttonHtml = () => {
       if(quickEdit.masv == mainData.masv) {
         return <div>
-          <button className="btn btn-danger" onClick={e => {
+          <button className="btn btn-dark" onClick={e => {
           this.setState({
             errors: {
               hoten: null,

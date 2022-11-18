@@ -45,8 +45,7 @@ export default class Main extends Component {
         localStorage.setItem("svData", data);
     }
 
-    
-
+    //lấy id tự động
     randomId = maxNumber => {
         let getRandomId = number => {
             let randomId = Math.floor(Math.random() * number);
@@ -61,6 +60,7 @@ export default class Main extends Component {
         return id;
     }
 
+    //nút thêm sv mới
     addSubmit = obj => {
         let {data} = this.state;
         obj = {
@@ -73,6 +73,7 @@ export default class Main extends Component {
         });
     }
 
+    //nút xóa sv
     deleteRow = masv => {
         let {data, searchRes} = this.state;
         let newData = data.filter((item) => item.masv !== masv);
@@ -89,9 +90,9 @@ export default class Main extends Component {
         }
     }
 
-    searchFunc = e => {
-        e.preventDefault();
-        let value = e.target.value.trim().toLowerCase();
+    //hàm tìm kiếm
+    searchFunc = value => {
+        value = value.trim().toLowerCase();
         let {data} = this.state;
         let searchRes = data.filter(item => item.hoten.toLowerCase().indexOf(value) !== -1);
         this.setState({
@@ -99,6 +100,7 @@ export default class Main extends Component {
         });
     }
 
+    //hàm sửa
     quickEditFunc = obj => {
         let updateID = obj.masv;
         let {data} = this.state;
