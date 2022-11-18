@@ -150,11 +150,11 @@ export default class Item extends Component {
 
     return (
       <tr>
-        <td>
+        <td className="text-center">
           {mainData.masv}
         </td>
         {dataForm.id.map((item, index) => {
-          return <td key={index}>
+          return <td className="text-center" key={index}>
             {quickEditHtml(item, mainData[item])}
             <i style={{color: "red", fontSize: "12px"}}>
             {this.state.errors[item]}
