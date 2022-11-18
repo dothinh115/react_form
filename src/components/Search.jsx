@@ -33,7 +33,7 @@ export default class Search extends Component {
                         </label>
                     </div>
                     <div className="col-8">
-                        <input className="form-control" onChange={this.inputChangeHandel} />
+                        <input className="form-control" onChange={this.inputChangeHandle} />
                     </div>
                     <div className="col-2">
                         <button className="btn btn-primary">
