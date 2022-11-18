@@ -58,19 +58,15 @@ export default class Item extends Component {
       let reg = "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
       if(!value.match(reg)) {
           messageError = this.props.dataForm.title[this.props.dataForm.id.indexOf(id)] + " chỉ được nhập chữ.";
-          e.target.value = value.replace(/[0-9]/g, "");
+          value = value.substr(0, value.length -1);
+          e.target.value = value;
       }
     }
     else if(id === "sdt") {
         let reg = /^[0-9]+$/;
         if(!value.match(reg)) {
             messageError = this.props.dataForm.title[this.props.dataForm.id.indexOf(id)] + " chỉ được điền số.";
-            for (let i in value.split("")) {
-                if(isNaN(value.charAt[i])){
-                    value = value.split("").splice(i, 1);
-                    value = value.join("");
-                }
-            }
+            value = value.substr(0, value.length -1);
             e.target.value = value;
         }
     }
@@ -86,7 +82,6 @@ export default class Item extends Component {
 
     this.setState({
       value: newValue,
-      errrors: newErrors
     }, () => {
       this.setState({
           valid: this.checkError()
@@ -130,7 +125,7 @@ export default class Item extends Component {
         }}>
             Hủy
           </button>
-          <button className="btn btn-success mx-2" onClick={this.quickEditConfirm}>
+          <button className="btn btn-success mx-2" disabled={!this.checkError()} onClick={this.quickEditConfirm}>
             OK
           </button>
         </div>

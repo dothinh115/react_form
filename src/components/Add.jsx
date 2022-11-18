@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 export default class Add extends Component {
     render() {
         const {inputChangeHandle, state, dataForm, btnClick} = this.props;
-
         return (
             <div>
                 <h1>

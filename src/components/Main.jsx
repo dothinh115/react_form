@@ -89,20 +89,14 @@ export default class Main extends Component {
             let reg = "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
             if(!value.match(reg)) {
                 messageError = this.dataForm.title[this.dataForm.id.indexOf("hoten")] + " chỉ được nhập chữ.";
-                e.target.value = value.replace(/[0-9]/g, "");
+                value = value.substr(0, value.length -1);
+                e.target.value = value;
             }
         }
         else if(valid === "sdt") {
             let reg = /^[0-9]+$/;
             if(!value.match(reg)) {
                 messageError = this.dataForm.title[this.dataForm.id.indexOf("sdt")] + " chỉ được điền số.";
-                for (let i in value.split("")) {
-                    if(isNaN(value.charAt[i])){
-                        value = value.split("").splice(i, 1);
-                        value = value.join("");
-                    }
-                }
-                e.target.value = value;
             }
         }
         else if(valid === "email") {
@@ -113,7 +107,6 @@ export default class Main extends Component {
         }
         newErr[id] = messageError;
         newAdd[id] = value;
-        
         this.setState({
             add: newAdd,
             errors: newErr
