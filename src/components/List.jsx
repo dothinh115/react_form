@@ -12,11 +12,11 @@ export default class List extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if(prevState.quickedit.masv !== this.state.quickedit.masv) {
-      this.props.setLocalStorage();
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if(prevState.quickedit.masv !== this.state.quickedit.masv) {
+  //     this.props.setLocalStorage();
+  //   }
+  // }
 
   setEditFunc = quickedit => {
     this.setState({
