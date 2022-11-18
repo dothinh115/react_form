@@ -21,13 +21,6 @@ export default class Item extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if(nextProps.mainData !== this.props.mainData || nextProps.quickEdit.masv !== this.props.quickEdit.masv) {
-      return true;
-    }
-    return false;
-  }
-
   checkError = () => {
     const {value, errors} = this.state;
     for (let key in value) {
@@ -54,16 +47,12 @@ export default class Item extends Component {
       let reg = "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
       if(!value.match(reg)) {
           messageError = this.props.dataForm.title[this.props.dataForm.id.indexOf(id)] + " chỉ được nhập chữ.";
-          value = value.substr(0, value.length -1);
-          e.target.value = value;
       }
     }
     else if(id === "sdt") {
         let reg = /^[0-9]+$/;
         if(!value.match(reg)) {
             messageError = this.props.dataForm.title[this.props.dataForm.id.indexOf(id)] + " chỉ được điền số.";
-            value = value.substr(0, value.length -1);
-            e.target.value = value;
         }
     }
     else if(id === "email") {
@@ -109,9 +98,9 @@ export default class Item extends Component {
         return <input 
         data-id={id} 
         type="text" 
-        className={`form-control ${this.state.errors[id] && "is-invalid"}`} 
+        className={`form-control ${this.state.errors[id] ? "is-invalid" : undefined}`} 
         defaultValue={contain} 
-        onInput={this.quickEditHandle}
+        onChange={this.quickEditHandle}
         onKeyUp={this.enterFunc}
         />
       }
