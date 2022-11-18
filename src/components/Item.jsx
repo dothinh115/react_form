@@ -111,16 +111,18 @@ export default class Item extends Component {
       if(quickEdit.masv === mainData.masv) {
         return <div>
           <button className="btn btn-dark" onClick={e => {
-          this.setState({
-            errors: {
-              hoten: null,
-              sdt: null,
-              email: null
-            }
-          });
-          setEditFunc({
-            masv: null
-          })
+            setEditFunc({
+              masv: null
+            });
+            this.setState({
+              errors: {
+                masv: "",
+                hoten: "",
+                sdt: "",
+                email: ""
+               },
+              valid: false
+            });
         }}>
             Hủy
           </button>
@@ -138,7 +140,7 @@ export default class Item extends Component {
             masv: mainData.masv
           });
           this.setState({
-            value: mainData
+            value: {...mainData}
           });
         }}>
           Sửa
