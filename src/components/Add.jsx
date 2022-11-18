@@ -17,7 +17,8 @@ export default class Add extends Component {
             email: ""
         },
         valid: false,
-        randomUser: false
+        randomUser: false,
+        focus: ""
       }
     }
 
@@ -25,6 +26,21 @@ export default class Add extends Component {
         if (this.state.randomUser) {
             this.randomInfo();
         }
+    }
+
+    //lấy id tự động
+    randomId = maxNumber => {
+        let getRandomId = number => {
+            let randomId = Math.floor(Math.random() * number);
+            return randomId;
+        }
+        //lấy số random
+        let id = getRandomId(maxNumber);
+        //tìm xem trong mảng có trùng hay ko, nếu trùng thì tiếp tục gọi hàm lấy số random
+        while (id.length < 10) {
+            id = getRandomId(maxNumber);
+        }
+        return id;
     }
 
     randomInfo = e => {
@@ -39,12 +55,13 @@ export default class Add extends Component {
             this.setState({
                 add: {
                     hoten: results.name.first + " " + results.name.last,
-                    sdt: results.cell,
+                    sdt: this.randomId(9999999999),
                     email: results.email
                 },
                 randomUser: false,
                 valid: true
             });
+            console.log(results);
         });
         fetch.catch(error => {
             console.log(error);
@@ -170,7 +187,7 @@ export default class Add extends Component {
                                 defaultValue={this.defaultValue(item)}
                                 onChange={this.inputChangeHandle} 
                                 />
-                                {this.state.errors[item] && <div className="invalid-feedback">{this.state.errors[item]}</div>}
+                                {this.state.errors[item] ? <div className="invalid-feedback">{this.state.errors[item]}</div> : undefined}
                             </div>
                     })}
                     

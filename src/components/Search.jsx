@@ -15,7 +15,7 @@ export default class Search extends Component {
         }
     }
 
-    inputChangeHandel = e => {
+    inputChangeHandle = e => {
         let searchKeys = e.target.value;
         this.setState({
             searchKeys
