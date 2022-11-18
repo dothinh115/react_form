@@ -54,7 +54,7 @@ export default class Main extends Component {
         //lấy số random
         let id = getRandomId(maxNumber);
         //tìm xem trong mảng có trùng hay ko, nếu trùng thì tiếp tục gọi hàm lấy số random
-        while (this.state.data.find(item => item.id === id) !== undefined) {
+        while (this.state.data.find(item => item.masv === id) !== undefined) {
             id = getRandomId(maxNumber);
         }
         return id;
@@ -65,7 +65,7 @@ export default class Main extends Component {
         let {data} = this.state;
         obj = {
             ...obj,
-            masv: this.randomId(999999)
+            masv: this.randomId(999999999)
         }
         data = [...data, obj];
         this.setState({
@@ -93,7 +93,7 @@ export default class Main extends Component {
     //hàm tìm kiếm
     searchFunc = value => {
         value = value.trim().toLowerCase();
-        let {data} = this.state;
+        const {data} = this.state;
         let searchRes = data.filter(item => item.hoten.toLowerCase().indexOf(value) !== -1);
         this.setState({
             searchRes
@@ -105,13 +105,11 @@ export default class Main extends Component {
         let updateID = obj.masv;
         let {data} = this.state;
         let find = data.findIndex(item => item.masv === updateID);
-        if(find !== -1) {
-            data[find] = obj;
-            this.setState({
-                data
-            });
-            // this.setLocalStorage(); gọi thủ công hàm lưu local
-        }
+        data[find] = obj;
+        this.setState({
+            data
+        });
+        // this.setLocalStorage(); gọi thủ công hàm lưu local
     }
 
     render() {

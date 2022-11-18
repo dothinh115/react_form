@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import axios from 'axios';
 
 export default class Add extends Component {
     constructor(props) {
@@ -6,18 +7,48 @@ export default class Add extends Component {
         
       this.state = {
         add: {
-            masv: null,
-            hoten: null,
-            sdt: null,
-            email: null
+            hoten: "",
+            sdt: "",
+            email: ""
         },
         errors: {
-            hoten: null,
-            sdt: null,
-            email: null
+            hoten: "",
+            sdt: "",
+            email: ""
         },
-        valid: false
+        valid: false,
+        randomUser: false
       }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.randomUser) {
+            this.randomInfo();
+        }
+    }
+
+    randomInfo = e => {
+        let fetch = axios({
+            url: "https://randomuser.me/api/",
+            method: "GET",
+            dataType: "JSON"
+        });
+        fetch.then(res => {
+            let {results} = res.data;
+            results = results[0];
+            this.setState({
+                add: {
+                    hoten: results.name.first + " " + results.name.last,
+                    sdt: results.cell,
+                    email: results.email
+                },
+                randomUser: false,
+                valid: true
+            });
+        });
+        fetch.catch(error => {
+            console.log(error);
+        })
     }
 
     checkError = () => {
@@ -88,12 +119,30 @@ export default class Add extends Component {
         }
     }
 
+    defaultValue = id => {
+        if (id === "hoten") {
+            return this.state.add.hoten;
+        }
+        else if(id === "sdt") {
+            return this.state.add.sdt;
+        }
+        else if(id === "email") {
+            return this.state.add.email;
+        }
+    } 
+
     render() {
         const {dataForm} = this.props;
         return (
             <div>
                 <h1>
-                    Thêm thông tin sinh viên
+                    Thêm thông tin sinh viên <button className="btn btn-info mx-2" onClick={e => {
+                            this.setState({
+                                randomUser: true
+                            });
+                        }}>
+                            Random info
+                        </button>
                 </h1>
                 <form className="form-group row" onSubmit={this.submit}>
                     <div className="col-6">
@@ -112,8 +161,9 @@ export default class Add extends Component {
                                 </label>
                                 <input 
                                 data-valid={item} 
-                                className={`form-control ${this.state.errors[item] && "is-invalid"}`} 
+                                className={`form-control ${this.state.errors[item] ? "is-invalid" : undefined}`} 
                                 id={item} 
+                                defaultValue={this.defaultValue(item)}
                                 onChange={this.inputChangeHandle} 
                                 />
                                 {this.state.errors[item] && <div className="invalid-feedback">{this.state.errors[item]}</div>}
