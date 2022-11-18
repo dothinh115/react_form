@@ -8,21 +8,14 @@ export default class Main extends Component {
       super(props)
     
       this.state = {
-        add: {
-            masv: null,
-            hoten: null,
-            sdt: null,
-            email: null
-        },
-        errors: {
-            hoten: null,
-            sdt: null,
-            email: null
-        },
         data: [],
-        valid: false,
         searchRes: []
       }
+    }
+
+    dataForm = {
+        id: ["hoten", "sdt", "email"],
+        title: ["Họ và tên", "Số điện thoại", "Email"]
     }
 
     componentDidMount() {
@@ -52,71 +45,7 @@ export default class Main extends Component {
         localStorage.setItem("svData", data);
     }
 
-    dataForm = {
-        id: ["hoten", "sdt", "email"],
-        title: ["Họ và tên", "Số điện thoại", "Email"]
-    }
-
-    checkError = () => {
-        const {add, errors} = this.state;
-        for (let key in errors) {
-            if(errors[key] !== "") {
-                return false;
-            }
-        }
-        for (let key in add) {
-            if(add[key] === "") {
-                return false;
-            }
-        }
-        return true;
-    }
     
-    inputChangeHandle = e => {
-        let id = e.target.id;
-        let value = e.target.value.trim();
-        let valid = e.target.getAttribute("data-valid");
-        
-        let newAdd = this.state.add;
-        let newErr = this.state.errors;
-
-        let messageError = "";
-        if(value === "") {
-            messageError = "Không được bỏ trống";
-        }
-        else if(valid === "hoten") {
-            let reg = "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
-            if(!value.match(reg)) {
-                messageError = this.dataForm.title[this.dataForm.id.indexOf(id)] + " chỉ được nhập chữ.";
-                value = value.substr(0, value.length -1);
-                e.target.value = value;
-            }
-        }
-        else if(valid === "sdt") {
-            let reg = /^[0-9]+$/;
-            if(!value.match(reg)) {
-                messageError = this.dataForm.title[this.dataForm.id.indexOf(id)] + " chỉ được điền số.";
-                value = value.substr(0, value.length -1);
-                e.target.value = value;
-            }
-        }
-        else if(valid === "email") {
-            let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            if(!value.match(reg)) {
-                messageError = this.dataForm.title[this.dataForm.id.indexOf(id)] + " phải đúng định dạng.";
-            }
-        }
-        newErr[id] = messageError;
-        newAdd[id] = value;
-        this.setState({
-            add: newAdd,
-            errors: newErr
-        }, () => {
-            this.setState({
-                valid: this.checkError()
-            });
-        });
-    }
 
     randomId = maxNumber => {
         let getRandomId = number => {
@@ -132,21 +61,16 @@ export default class Main extends Component {
         return id;
     }
 
-    btnClick = e => {
-        e.preventDefault();
-        
-        if(this.checkError()) {
-            const {data, add} = this.state;
-            this.setState({
-                data: [...data, {
-                    masv: this.randomId(999999),
-                    hoten: add.hoten,
-                    sdt: add.sdt,
-                    email: add.email
-                }],
-                searchRes: []
-            });
+    addSubmit = obj => {
+        let {data} = this.state;
+        obj = {
+            ...obj,
+            masv: this.randomId(999999)
         }
+        data = [...data, obj];
+        this.setState({
+            data
+        });
     }
 
     deleteRow = masv => {
@@ -191,9 +115,9 @@ export default class Main extends Component {
         return (
             <div className="container">
                 <Add 
-                inputChangeHandle={this.inputChangeHandle} 
-                btnClick={this.btnClick} state={this.state} 
-                dataForm={this.dataForm}/>
+                addSubmit={this.addSubmit} 
+                dataForm={this.dataForm}
+                />
                 <Search 
                 searchFunc={this.searchFunc} 
                 />
