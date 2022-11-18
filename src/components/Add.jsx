@@ -1,13 +1,6 @@
 import React, { Component } from 'react'
 
 export default class Add extends Component {
-    shouldComponentUpdate(nextProps, nextState) {
-        if(nextProps !== this.props) {
-            return true;
-        }
-        return false;
-    }
-
     render() {
         const {inputChangeHandle, state, dataForm, btnClick} = this.props;
 

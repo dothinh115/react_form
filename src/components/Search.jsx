@@ -9,11 +9,11 @@ export default class Search extends Component {
                 <div className="form-group row mt-5">
                     <div className="col-2">
                         <label htmlFor="searchInput" className="col-form-label">
-                            Tìm kiếm (bằng mã số sv):
+                            Tìm kiếm (bằng họ và tên):
                         </label>
                     </div>
                     <div className="col-8">
-                        <input type="number" className="form-control" onChange={searchFunc} />
+                        <input className="form-control" onChange={searchFunc} />
                     </div>
                     <div className="col-2">
                         <button className="btn btn-primary">

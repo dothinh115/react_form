@@ -29,9 +29,11 @@ export default class Main extends Component {
         this.getLocalStorage();
     }
 
-    componentDidUpdate(preProps, preState) {
-        if(preState.data !== this.state.data) {
-           this.setLocalStorage();
+    componentDidUpdate(prevProps, prevState) {
+        for (let key in prevState.data) {
+            if(prevState.data[key] !== this.state.data[key]) {
+                this.setLocalStorage();
+            }
         }
     }
 
@@ -95,7 +97,7 @@ export default class Main extends Component {
             if(!value.match(reg)) {
                 messageError = this.dataForm.title[this.dataForm.id.indexOf("sdt")] + " chỉ được điền số.";
                 for (let i in value.split("")) {
-                    if(isNaN(value.split("")[i])){
+                    if(isNaN(value.charAt[i])){
                         value = value.split("").splice(i, 1);
                         value = value.join("");
                     }
@@ -154,13 +156,14 @@ export default class Main extends Component {
     }
 
     deleteRow = masv => {
-        let newData = this.state.data.filter((item) => item.masv !== masv);
-        if(this.state.searchRes.length === 0) {
+        let {data, searchRes} = this.state;
+        let newData = data.filter((item) => item.masv !== masv);
+        if(searchRes.length === 0) {
             this.setState({
                 data: newData
             });
         }else {
-            let newSeachRes = this.state.searchRes.filter((item) => item.masv !== masv);
+            let newSeachRes = searchRes.filter((item) => item.masv !== masv);
             this.setState({
                 data: newData,
                 searchRes: newSeachRes
@@ -170,20 +173,43 @@ export default class Main extends Component {
 
     searchFunc = e => {
         e.preventDefault();
-        let value = e.target.value.trim();
+        let value = e.target.value.trim().toLowerCase();
         let {data} = this.state;
-        let searchRes = data.filter(item => item.masv.toString().indexOf(value) !== -1);
+        let searchRes = data.filter(item => item.hoten.toLowerCase().indexOf(value) !== -1);
         this.setState({
             searchRes
         });
+        console.log(searchRes);
+    }
+
+    quickEditFunc = obj => {
+        let updateID = obj.masv;
+        let {data} = this.state;
+        let find = data.findIndex(item => item.masv === updateID);
+        if(find !== -1) {
+            data[find] = obj;
+            this.setState({
+                data
+            });
+        }
     }
 
     render() {
         return (
             <div className="container">
-                <Add inputChangeHandle={this.inputChangeHandle} btnClick={this.btnClick} state={this.state} dataForm={this.dataForm}/>
-                <Search searchFunc={this.searchFunc} />
-                <List dataForm={this.dataForm} mainData={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.data} deleteRow={this.deleteRow}/>
+                <Add 
+                inputChangeHandle={this.inputChangeHandle} 
+                btnClick={this.btnClick} state={this.state} 
+                dataForm={this.dataForm}/>
+                <Search 
+                searchFunc={this.searchFunc} 
+                />
+                <List 
+                dataForm={this.dataForm} 
+                mainData={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.data} 
+                deleteRow={this.deleteRow}
+                quickEditFunc={this.quickEditFunc}
+                />
             </div>
         )
     }
