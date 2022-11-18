@@ -55,6 +55,7 @@ export default class List extends Component {
               })}
             </tbody>
           </table>
+          {mainData.length === 0 ?  <div className="text-center">Chưa có ai ở đây.</div> : undefined} 
         </div>
       </div>
     )
