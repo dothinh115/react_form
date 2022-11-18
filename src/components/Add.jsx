@@ -17,8 +17,7 @@ export default class Add extends Component {
             email: ""
         },
         valid: false,
-        randomUser: false,
-        focus: ""
+        randomUser: false
       }
     }
 
@@ -61,7 +60,6 @@ export default class Add extends Component {
                 randomUser: false,
                 valid: true
             });
-            console.log(results);
         });
         fetch.catch(error => {
             console.log(error);

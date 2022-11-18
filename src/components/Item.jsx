@@ -110,7 +110,7 @@ export default class Item extends Component {
     let buttonHtml = () => {
       if(quickEdit.masv === mainData.masv) {
         return <div>
-          <button className="btn btn-dark" onClick={e => {
+          <button className="btn btn-light" onClick={e => {
             setEditFunc({
               masv: null
             });
