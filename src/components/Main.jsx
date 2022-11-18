@@ -9,15 +9,15 @@ export default class Main extends Component {
     
       this.state = {
         add: {
-            masv: null,
-            hoten: null,
-            sdt: null,
-            email: null
+            masv: "",
+            hoten: "",
+            sdt: "",
+            email: ""
         },
         errors: {
-            hoten: null,
-            sdt: null,
-            email: null
+            hoten: "",
+            sdt: "",
+            email: ""
         },
         data: [],
         valid: false,
@@ -88,7 +88,7 @@ export default class Main extends Component {
         else if(valid === "hoten") {
             let reg = "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
             if(!value.match(reg)) {
-                messageError = this.dataForm.title[this.dataForm.id.indexOf("hoten")] + " chỉ được nhập chữ.";
+                messageError = this.dataForm.title[this.dataForm.id.indexOf(id)] + " chỉ được nhập chữ.";
                 value = value.substr(0, value.length -1);
                 e.target.value = value;
             }
@@ -96,13 +96,15 @@ export default class Main extends Component {
         else if(valid === "sdt") {
             let reg = /^[0-9]+$/;
             if(!value.match(reg)) {
-                messageError = this.dataForm.title[this.dataForm.id.indexOf("sdt")] + " chỉ được điền số.";
+                messageError = this.dataForm.title[this.dataForm.id.indexOf(id)] + " chỉ được điền số.";
+                value = value.substr(0, value.length -1);
+                e.target.value = value;
             }
         }
         else if(valid === "email") {
             let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             if(!value.match(reg)) {
-                messageError = this.dataForm.title[this.dataForm.id.indexOf("email")] + " phải đúng định dạng.";
+                messageError = this.dataForm.title[this.dataForm.id.indexOf(id)] + " phải đúng định dạng.";
             }
         }
         newErr[id] = messageError;
@@ -144,7 +146,7 @@ export default class Main extends Component {
                     email: add.email
                 }],
                 searchRes: []
-            })
+            });
         }
     }
 
@@ -202,6 +204,7 @@ export default class Main extends Component {
                 mainData={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.data} 
                 deleteRow={this.deleteRow}
                 quickEditFunc={this.quickEditFunc}
+                setLocalStorage={this.setLocalStorage}
                 />
             </div>
         )

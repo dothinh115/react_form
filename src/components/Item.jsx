@@ -6,17 +6,18 @@ export default class Item extends Component {
   
     this.state = {
        value: {
-        masv: null,
-        hoten: null,
-        sdt: null,
-        email: null
+        masv: "",
+        hoten: "",
+        sdt: "",
+        email: ""
        },
-       errrors: {
-        hoten: null,
-        sdt: null,
-        email: null
+       errors: {
+        masv: "",
+        hoten: "",
+        sdt: "",
+        email: ""
        },
-       valid: false
+       valid: true
     }
   }
 
@@ -29,25 +30,20 @@ export default class Item extends Component {
 
   checkError = () => {
     const {value, errors} = this.state;
-    for (let key in errors) {
-        if(errors[key] !== "") {
-            return false;
-        }
-    }
     for (let key in value) {
-        if(value[key] === "") {
-            return false;
-        }
+      if(value[key] === "" || errors[key] !== "") {
+          return false;
+      }
     }
     return true;
-}
+  }
 
   quickEditHandle = e => {
     let value = e.target.value.trim();
     let id = e.target.getAttribute("data-id");
     
     let newValue = this.state.value;
-    let newErrors = this.state.errrors;
+    let newErrors = this.state.errors;
 
     let messageError = "";
 
@@ -82,18 +78,20 @@ export default class Item extends Component {
 
     this.setState({
       value: newValue,
+      errors: newErrors
     }, () => {
       this.setState({
           valid: this.checkError()
       });
+      console.log(this.state.valid, this.state.value, this.state.errors);
   });
   }
 
   quickEditConfirm = () => {
-    if(this.checkError()) {
+    if(this.state.valid){
       this.props.quickEditFunc(this.state.value);
       this.props.setEditFunc({
-        masv: null
+        masv: ""
       });
     }
   }
@@ -102,8 +100,8 @@ export default class Item extends Component {
     const {mainData, dataForm, deleteRow, quickEdit, setEditFunc} = this.props;  
     
     let quickEditHtml = (id, contain) => {
-      if(quickEdit.masv == mainData.masv) {
-        return <input data-id={id} type="text" className={`form-control ${this.state.errrors[id] && "is-invalid"}`} defaultValue={contain} onChange={this.quickEditHandle}/>
+      if(quickEdit.masv === mainData.masv) {
+        return <input data-id={id} type="text" className={`form-control ${this.state.errors[id] && "is-invalid"}`} defaultValue={contain} onInput={this.quickEditHandle}/>
       }
       return contain;
     }
@@ -113,19 +111,19 @@ export default class Item extends Component {
         return <div>
           <button className="btn btn-danger" onClick={e => {
           this.setState({
-            errrors: {
+            errors: {
               hoten: null,
               sdt: null,
               email: null
             }
           });
           setEditFunc({
-            masv: ""
+            masv: null
           })
         }}>
             Hủy
           </button>
-          <button className="btn btn-success mx-2" disabled={!this.checkError()} onClick={this.quickEditConfirm}>
+          <button className="btn btn-success mx-2" disabled={this.state.valid ? false : true} onClick={this.quickEditConfirm}>
             OK
           </button>
         </div>
@@ -156,7 +154,7 @@ export default class Item extends Component {
           return <td key={index}>
             {quickEditHtml(item, mainData[item])}
             <i style={{color: "red", fontSize: "12px"}}>
-            {this.state.errrors[item]}
+            {this.state.errors[item]}
             </i>     
           </td>
         })}
