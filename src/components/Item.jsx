@@ -83,8 +83,13 @@ export default class Item extends Component {
       this.setState({
           valid: this.checkError()
       });
-      console.log(this.state.valid, this.state.value, this.state.errors);
-  });
+    });
+  }
+
+  enterFunc = e => {
+    if(e.key === "Enter") {
+      this.quickEditConfirm();
+    }
   }
 
   quickEditConfirm = () => {
@@ -101,7 +106,14 @@ export default class Item extends Component {
     
     let quickEditHtml = (id, contain) => {
       if(quickEdit.masv === mainData.masv) {
-        return <input data-id={id} type="text" className={`form-control ${this.state.errors[id] && "is-invalid"}`} defaultValue={contain} onInput={this.quickEditHandle}/>
+        return <input 
+        data-id={id} 
+        type="text" 
+        className={`form-control ${this.state.errors[id] && "is-invalid"}`} 
+        defaultValue={contain} 
+        onInput={this.quickEditHandle}
+        onKeyUp={this.enterFunc}
+        />
       }
       return contain;
     }
