@@ -102,13 +102,21 @@ export default class Main extends Component {
     //hàm sửa
     quickEditFunc = obj => {
         let updateID = obj.masv;
+        if(this.state.searchRes.length !== 0) {
+            let newSearchRes = [...this.state.searchRes];
+            let find = newSearchRes.findIndex(item => item.masv === updateID);
+            newSearchRes[find] = obj;
+            this.setState({
+                searchRes: newSearchRes
+            });
+        }
         let newData = [...this.state.data];
         let find = newData.findIndex(item => item.masv === updateID);
         newData[find] = obj;
         this.setState({
             data: newData
         });
-        // this.setLocalStorage(); gọi thủ công hàm lưu local
+        
     }
 
     render() {
