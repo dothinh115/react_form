@@ -173,7 +173,6 @@ export default class Main extends Component {
         this.setState({
             searchRes
         });
-        console.log(searchRes);
     }
 
     quickEditFunc = obj => {
