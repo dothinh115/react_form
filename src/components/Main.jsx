@@ -108,6 +108,7 @@ export default class Main extends Component {
             this.setState({
                 data
             });
+            // this.setLocalStorage(); gọi thủ công hàm lưu local
         }
     }
 
@@ -126,7 +127,6 @@ export default class Main extends Component {
                 mainData={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.data} 
                 deleteRow={this.deleteRow}
                 quickEditFunc={this.quickEditFunc}
-                setLocalStorage={this.setLocalStorage}
                 />
             </div>
         )
