@@ -26,7 +26,6 @@ export default class Main extends Component {
         if(prevState.data !== this.state.data) {
             this.setLocalStorage();
         }
-        console.log(prevState, this.state);
     }
 
     //hàm lấy dữ liệu từ localStorage
@@ -103,11 +102,11 @@ export default class Main extends Component {
     //hàm sửa
     quickEditFunc = obj => {
         let updateID = obj.masv;
-        let {data} = this.state;
-        let find = data.findIndex(item => item.masv === updateID);
-        data[find] = obj;
+        let newData = [...this.state.data];
+        let find = newData.findIndex(item => item.masv === updateID);
+        newData[find] = obj;
         this.setState({
-            data
+            data: newData
         });
         // this.setLocalStorage(); gọi thủ công hàm lưu local
     }
