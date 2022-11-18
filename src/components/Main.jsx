@@ -9,15 +9,15 @@ export default class Main extends Component {
     
       this.state = {
         add: {
-            masv: "",
-            hoten: "",
-            sdt: "",
-            email: ""
+            masv: null,
+            hoten: null,
+            sdt: null,
+            email: null
         },
         errors: {
-            hoten: "",
-            sdt: "",
-            email: ""
+            hoten: null,
+            sdt: null,
+            email: null
         },
         data: [],
         valid: false,
@@ -30,11 +30,10 @@ export default class Main extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        for (let key in prevState.data) {
-            if(prevState.data[key] !== this.state.data[key]) {
-                this.setLocalStorage();
-            }
+        if(prevState.data.length !== this.state.data.length) {
+            this.setLocalStorage();
         }
+        console.log(prevState, this.state);
     }
 
     //hàm lấy dữ liệu từ localStorage

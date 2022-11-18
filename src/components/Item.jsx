@@ -5,7 +5,7 @@ export default class Item extends Component {
     super(props)
   
     this.state = {
-       value: {
+        value: {
         masv: "",
         hoten: "",
         sdt: "",
