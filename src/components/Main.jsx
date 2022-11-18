@@ -30,7 +30,7 @@ export default class Main extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if(prevState.data.length !== this.state.data.length) {
+        if(prevState.data !== this.state.data) {
             this.setLocalStorage();
         }
         console.log(prevState, this.state);
