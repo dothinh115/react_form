@@ -138,18 +138,6 @@ export default class Add extends Component {
         }
     }
 
-    defaultValue = id => {
-        if (id === "hoten") {
-            return this.state.add.hoten;
-        }
-        else if(id === "sdt") {
-            return this.state.add.sdt;
-        }
-        else if(id === "email") {
-            return this.state.add.email;
-        }
-    } 
-
     render() {
         const {dataForm} = this.props;
         return (
@@ -182,7 +170,7 @@ export default class Add extends Component {
                                 data-valid={item} 
                                 className={`form-control ${this.state.errors[item] ? "is-invalid" : undefined}`} 
                                 id={item} 
-                                defaultValue={this.defaultValue(item)}
+                                defaultValue={this.state.add[item]}
                                 onChange={this.inputChangeHandle} 
                                 />
                                 {this.state.errors[item] ? <div className="invalid-feedback">{this.state.errors[item]}</div> : undefined}
