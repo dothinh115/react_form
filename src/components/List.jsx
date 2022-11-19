@@ -12,6 +12,16 @@ export default class List extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.mainData !== this.props.mainData) {
+      this.setState({
+        quickedit: {
+          masv: ""
+        }
+      });
+    }
+  }
+
   setEditFunc = quickedit => {
     this.setState({
       quickedit
