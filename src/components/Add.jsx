@@ -24,6 +24,9 @@ export default class Add extends Component {
     componentDidUpdate(prevProps, prevState) {
         if (this.state.randomUser) {
             this.randomInfo();
+            this.setState({
+                randomUser: false
+            })
         }
     }
 
@@ -57,7 +60,6 @@ export default class Add extends Component {
                     sdt: this.randomId(9999999999),
                     email: results.email
                 },
-                randomUser: false,
                 valid: true
             });
         });
