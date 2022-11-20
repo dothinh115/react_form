@@ -104,7 +104,7 @@ export default class Item extends Component {
   checkIfDifferent = () => {
     let {value} = this.state;
     for (let key in value) {
-      if(value[key] !== this.props.mainData[key]) {
+      if(value[key] != this.props.mainData[key]) {
         return true;
       }
     }
