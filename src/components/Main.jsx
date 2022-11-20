@@ -26,9 +26,9 @@ export default class Main extends Component {
     componentDidUpdate(prevProps, prevState) {
         if(prevState.data !== this.state.data) {
             this.setLocalStorage();
-            this.setState({
-                searchRes: []
-            });
+        }
+        if(prevState.searchKeys !== this.state.searchKeys) {
+            this.searchRes();
         }
     }
 
@@ -72,7 +72,8 @@ export default class Main extends Component {
         }
         data = [...data, obj];
         this.setState({
-            data
+            data,
+            searchRes: []
         });
     }
 
@@ -112,7 +113,9 @@ export default class Main extends Component {
     searchRes = () => {
         const {data} = this.state;
         let searchRes = data.filter(item => item.hoten.toLowerCase().indexOf(this.state.searchKeys) !== -1);
-        return searchRes;
+        this.setState({
+            searchRes
+        });
     }
 
     //hàm sửa
@@ -146,7 +149,7 @@ export default class Main extends Component {
                 />
                 <List 
                 dataForm={this.dataForm} 
-                mainData={this.searchRes().length !== 0 ? this.searchRes() : this.state.data} 
+                mainData={this.state.searchRes.length !== 0 ? this.state.searchRes : this.state.data} 
                 deleteRow={this.deleteRow}
                 quickEditFunc={this.quickEditFunc}
                 />

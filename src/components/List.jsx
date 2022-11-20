@@ -22,10 +22,12 @@ export default class List extends Component {
         email: ""
       });
     }
-    let findIndex = this.props.mainData.findIndex(item => item.masv === this.state.masv);
-    for (let key in this.props.mainData[findIndex]) {
-      if(this.props.mainData[findIndex][key] !== this.state[key]) {
-        this.props.quickEditFunc(this.state);
+    if(prevState !== this.state && prevState.masv !== "") {
+      let findIndex = this.props.mainData.findIndex(item => item.masv === this.state.masv);
+      for (let key in this.props.mainData[findIndex]) {
+        if(this.props.mainData[findIndex][key] !== this.state[key]) {
+          this.props.quickEditFunc(this.state);
+        }
       }
     }
   }
