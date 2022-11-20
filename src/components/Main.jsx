@@ -9,7 +9,8 @@ export default class Main extends Component {
     
       this.state = {
         data: [],
-        searchRes: []
+        searchRes: [],
+        searchKeys: ""
       }
     }
 
@@ -93,13 +94,25 @@ export default class Main extends Component {
     }
 
     //hàm tìm kiếm
+    // searchFunc = value => {
+    //     value = value.trim().toLowerCase();
+    //     const {data} = this.state;
+    //     let searchRes = data.filter(item => item.hoten.toLowerCase().indexOf(value) !== -1);
+    //     this.setState({
+    //         searchRes
+    //     });
+    // }
     searchFunc = value => {
         value = value.trim().toLowerCase();
-        const {data} = this.state;
-        let searchRes = data.filter(item => item.hoten.toLowerCase().indexOf(value) !== -1);
         this.setState({
-            searchRes
+            searchKeys: value
         });
+    }
+
+    searchRes = () => {
+        const {data} = this.state;
+        let searchRes = data.filter(item => item.hoten.toLowerCase().indexOf(this.state.searchKeys) !== -1);
+        return searchRes;
     }
 
     //hàm sửa
@@ -119,7 +132,6 @@ export default class Main extends Component {
         this.setState({
             data: newData
         });
-        
     }
 
     render() {
@@ -134,7 +146,7 @@ export default class Main extends Component {
                 />
                 <List 
                 dataForm={this.dataForm} 
-                mainData={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.data} 
+                mainData={this.searchRes().length !== 0 ? this.searchRes() : this.state.data} 
                 deleteRow={this.deleteRow}
                 quickEditFunc={this.quickEditFunc}
                 />
