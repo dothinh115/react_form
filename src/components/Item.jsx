@@ -39,10 +39,10 @@ export default class Item extends Component {
     const {value, errors} = this.state;
     for (let key in value) {
       if(value[key] === "" || errors[key] !== "") {
-          return false;
+          return false; //false == khong dat
       }
     }
-    return true;
+    return true; //true == dat
   }
 
   quickEditHandle = e => {
@@ -101,6 +101,16 @@ export default class Item extends Component {
     }
   }
 
+  checkIfDifferent = () => {
+    let {value} = this.state;
+    for (let key in value) {
+      if(value[key] !== this.props.mainData[key]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   render() {
     const {mainData, dataForm, deleteRow, quickEdit, setEditFunc} = this.props;  
     
@@ -131,7 +141,7 @@ export default class Item extends Component {
         }}>
             Hủy
           </button>
-          <button className="btn btn-success mx-2" disabled={this.state.valid ? false : true} onClick={this.quickEditConfirm}>
+          <button className="btn btn-success mx-2" disabled={this.checkError() && this.checkIfDifferent() ? false : true} onClick={this.quickEditConfirm}>
             OK
           </button>
         </div>
