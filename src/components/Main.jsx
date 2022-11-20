@@ -25,6 +25,9 @@ export default class Main extends Component {
     componentDidUpdate(prevProps, prevState) {
         if(prevState.data !== this.state.data) {
             this.setLocalStorage();
+            this.setState({
+                searchRes: []
+            });
         }
     }
 

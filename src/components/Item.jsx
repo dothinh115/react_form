@@ -6,18 +6,32 @@ export default class Item extends Component {
   
     this.state = {
         value: {
-        masv: "",
-        hoten: "",
-        sdt: "",
-        email: ""
-       },
-       errors: {
-        masv: "",
-        hoten: "",
-        sdt: "",
-        email: ""
-       },
-       valid: true
+          masv: "",
+          hoten: "",
+          sdt: "",
+          email: ""
+        },
+        errors: {
+          masv: "",
+          hoten: "",
+          sdt: "",
+          email: ""
+        },
+        valid: true
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.quickEdit.masv === "" && prevProps.quickEdit.masv !== this.props.quickEdit.masv) {
+      this.setState({
+        errors: {
+          masv: "",
+          hoten: "",
+          sdt: "",
+          email: ""
+         },
+         valid: true
+      });
     }
   }
 
@@ -82,11 +96,8 @@ export default class Item extends Component {
   }
 
   quickEditConfirm = () => {
-    if(this.state.valid){
-      this.props.quickEditFunc(this.state.value);
-      this.props.setEditFunc({
-        masv: null
-      });
+    if(this.checkError()){
+      this.props.setEditFunc(this.state.value);
     }
   }
 
@@ -112,16 +123,10 @@ export default class Item extends Component {
         return <div>
           <button className="btn btn-light" onClick={e => {
             setEditFunc({
-              masv: null
-            });
-            this.setState({
-              errors: {
-                masv: "",
-                hoten: "",
-                sdt: "",
-                email: ""
-               },
-              valid: false
+              masv: "",
+              hoten: "",
+              sdt: "",
+              email: ""
             });
         }}>
             Hủy
@@ -136,12 +141,10 @@ export default class Item extends Component {
           Xóa
         </button>
         <button className="btn btn-info mx-2" onClick={e => {
-          setEditFunc({
-            masv: mainData.masv
-          });
           this.setState({
             value: {...mainData}
           });
+          setEditFunc({...mainData});
         }}>
           Sửa
         </button>

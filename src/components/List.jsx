@@ -1,30 +1,35 @@
 import React, { Component } from 'react'
-import Item from './Item'
+import Item from './Item';
 
 export default class List extends Component {
   constructor(props) {
     super(props)
   
     this.state = {
-      quickedit: {
-        masv: ""
-      }
+      masv: "",
+      hoten: "",
+      sdt: "",
+      email: ""
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if(prevProps.mainData !== this.props.mainData) {
       this.setState({
-        quickedit: {
-          masv: ""
-        }
+        masv: "",
+        hoten: "",
+        sdt: "",
+        email: ""
       });
+    }
+    if(prevState !== this.state && this.state.masv !== "" && prevState.masv !== "") {
+      this.props.quickEditFunc(this.state);
     }
   }
 
-  setEditFunc = quickedit => {
+  setEditFunc = newObj => {
     this.setState({
-      quickedit
+      ...newObj
     });
   }
 
@@ -54,9 +59,8 @@ export default class List extends Component {
               mainData={item} 
               dataForm={dataForm}
               deleteRow={deleteRow}
-              quickEdit={this.state.quickedit}
+              quickEdit={this.state}
               setEditFunc={this.setEditFunc}
-              quickEditFunc={quickEditFunc}
               />
             })}
           </tbody>
