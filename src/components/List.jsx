@@ -42,6 +42,7 @@ export default class List extends Component {
     const {dataForm, mainData, deleteRow, quickEditFunc} = this.props;
     return (
       <div className="mt-5">
+        <h1>Danh sách sinh viên</h1>
         <table className="table table-striped table-dark">
           <thead>
             <tr>

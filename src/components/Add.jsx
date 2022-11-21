@@ -178,7 +178,6 @@ export default class Add extends Component {
                                 {this.state.errors[item] ? <div className="invalid-feedback">{this.state.errors[item]}</div> : undefined}
                             </div>
                     })}
-                    
                     <div className="col-12 mt-2">
                         <button type="submit" className={`btn btn-primary ${this.state.valid ? "" : "disabled"}`}>
                             Thêm

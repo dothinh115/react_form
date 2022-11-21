@@ -9,8 +9,7 @@ export default class Main extends Component {
     
       this.state = {
         data: [],
-        searchRes: [],
-        searchKeys: ""
+        searchRes: []
       }
     }
 
@@ -26,9 +25,6 @@ export default class Main extends Component {
     componentDidUpdate(prevProps, prevState) {
         if(prevState.data !== this.state.data) {
             this.setLocalStorage();
-        }
-        if(prevState.searchKeys !== this.state.searchKeys) {
-            this.searchRes();
         }
     }
 
@@ -95,24 +91,10 @@ export default class Main extends Component {
     }
 
     //hàm tìm kiếm
-    // searchFunc = value => {
-    //     value = value.trim().toLowerCase();
-    //     const {data} = this.state;
-    //     let searchRes = data.filter(item => item.hoten.toLowerCase().indexOf(value) !== -1);
-    //     this.setState({
-    //         searchRes
-    //     });
-    // }
     searchFunc = value => {
         value = value.trim().toLowerCase();
-        this.setState({
-            searchKeys: value
-        });
-    }
-
-    searchRes = () => {
         const {data} = this.state;
-        let searchRes = data.filter(item => item.hoten.toLowerCase().indexOf(this.state.searchKeys) !== -1);
+        let searchRes = data.filter(item => item.hoten.toLowerCase().indexOf(value) !== -1);
         this.setState({
             searchRes
         });
