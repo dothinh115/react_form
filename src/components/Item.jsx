@@ -22,8 +22,7 @@ export default class Item extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    //Trường hợp người dùng nhấn vào nút sửa lần đầu tiên, xóa trắng errors 
-    if(prevProps.quickEdit.masv === "" && prevProps.quickEdit.masv !== this.props.quickEdit.masv) {
+    if(prevProps.quickEdit.masv !== this.props.quickEdit.masv) {
       this.setState({
         errors: {
           masv: "",
@@ -102,55 +101,55 @@ export default class Item extends Component {
     return false;
   }
 
-  render() {
-    const {mainData, dataForm, deleteRow, quickEdit, setEditFunc} = this.props;  
-    
-    let quickEditHtml = (id, contain) => {
-      if(quickEdit.masv === mainData.masv) {
-        return <input 
-        data-id={id} 
-        type="text" 
-        className={`form-control ${this.state.errors[id] && "is-invalid"}`} 
-        defaultValue={contain} 
-        onChange={this.quickEditHandle}
-        onKeyUp={this.enterFunc}
-        />
-      }
-      return contain;
+  quickEditHtml = (id, contain) => {
+    if(this.props.quickEdit.masv === this.props.mainData.masv) {
+      return <input 
+      data-id={id} 
+      type="text" 
+      className={`form-control ${this.state.errors[id] && "is-invalid"}`} 
+      defaultValue={contain} 
+      onChange={this.quickEditHandle}
+      onKeyUp={this.enterFunc}
+      />
     }
+    return contain;
+  }
 
-    let buttonHtml = () => {
-      if(quickEdit.masv === mainData.masv) {
-        return <div>
-          <button className="btn btn-light" onClick={e => {
-            setEditFunc({
-              masv: "",
-              hoten: "",
-              sdt: "",
-              email: ""
-            });
-        }}>
-            Hủy
-          </button>
-          <button className="btn btn-success mx-2" disabled={this.checkError() && this.checkIfDifferent() ? false : true} onClick={this.quickEditConfirm}>
-            OK
-          </button>
-        </div>
-      }
+  buttonHtml = () => {
+    if(this.props.quickEdit.masv === this.props.mainData.masv) {
       return <div>
-        <button className="btn btn-danger" onClick={e => deleteRow(mainData.masv)}>
-          Xóa
-        </button>
-        <button className="btn btn-info mx-2" onClick={e => {
-          this.setState({
-            value: {...mainData}
+        <button className="btn btn-light" onClick={e => {
+          this.props.setEditFunc({
+            masv: "",
+            hoten: "",
+            sdt: "",
+            email: ""
           });
-          setEditFunc({...mainData});
-        }}>
-          Sửa
+      }}>
+          Hủy
+        </button>
+        <button className="btn btn-success mx-2" disabled={this.checkError() && this.checkIfDifferent() ? false : true} onClick={this.quickEditConfirm}>
+          OK
         </button>
       </div>
     }
+    return <div>
+      <button className="btn btn-danger" onClick={e => this.props.deleteRow(this.props.mainData.masv)}>
+        Xóa
+      </button>
+      <button className="btn btn-info mx-2" onClick={e => {
+        this.setState({
+          value: {...this.props.mainData}
+        });
+        this.props.setEditFunc({...this.props.mainData});
+      }}>
+        Sửa
+      </button>
+    </div>
+  }
+
+  render() {
+    const {mainData, dataForm, deleteRow, quickEdit, setEditFunc} = this.props;  
 
     return (
       <tr>
@@ -159,12 +158,12 @@ export default class Item extends Component {
         </td>
         {dataForm.id.map((item, index) => {
           return <td className="text-center" key={index}>
-            {quickEditHtml(item, mainData[item])}
+            {this.quickEditHtml(item, mainData[item])}
             {this.state.errors[item] && quickEdit.masv !== "" ? <i style={{color: "red", fontSize: "12px"}}>{this.state.errors[item]}</i> : undefined}   
           </td>
         })}
         <td align="right">
-          {buttonHtml()}
+          {this.buttonHtml()}
         </td>
       </tr>
     )
