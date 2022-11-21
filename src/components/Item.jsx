@@ -22,6 +22,7 @@ export default class Item extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    //Trường hợp người dùng nhấn vào nút sửa lần đầu tiên, xóa trắng errors 
     if(prevProps.quickEdit.masv === "" && prevProps.quickEdit.masv !== this.props.quickEdit.masv) {
       this.setState({
         errors: {
@@ -29,8 +30,7 @@ export default class Item extends Component {
           hoten: "",
           sdt: "",
           email: ""
-         },
-         valid: true
+         }
       });
     }
   }
@@ -91,6 +91,7 @@ export default class Item extends Component {
     }
   }
 
+  //hàm tìm kiếm sự thay đổi, nếu có thay đổi thì trả về true
   checkIfDifferent = () => {
     let {value} = this.state;
     for (let key in value) {
@@ -109,7 +110,7 @@ export default class Item extends Component {
         return <input 
         data-id={id} 
         type="text" 
-        className={`form-control ${this.state.errors[id] ? "is-invalid" : undefined}`} 
+        className={`form-control ${this.state.errors[id] && "is-invalid"}`} 
         defaultValue={contain} 
         onChange={this.quickEditHandle}
         onKeyUp={this.enterFunc}
@@ -122,15 +123,11 @@ export default class Item extends Component {
       if(quickEdit.masv === mainData.masv) {
         return <div>
           <button className="btn btn-light" onClick={e => {
-            let resetData = {
+            setEditFunc({
               masv: "",
               hoten: "",
               sdt: "",
               email: ""
-            };
-            setEditFunc(resetData);
-            this.setState({
-              errors: resetData
             });
         }}>
             Hủy
@@ -163,9 +160,7 @@ export default class Item extends Component {
         {dataForm.id.map((item, index) => {
           return <td className="text-center" key={index}>
             {quickEditHtml(item, mainData[item])}
-            <i style={{color: "red", fontSize: "12px"}}>
-            {this.state.errors[item]}
-            </i>     
+            {this.state.errors[item] && quickEdit.masv !== "" ? <i style={{color: "red", fontSize: "12px"}}>{this.state.errors[item]}</i> : undefined}   
           </td>
         })}
         <td align="right">
