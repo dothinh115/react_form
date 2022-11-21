@@ -46,35 +46,31 @@ export default class Item extends Component {
   }
 
   quickEditHandle = e => {
-    let value = e.target.value.trim();
+    let inputValue = e.target.value.trim();
     let id = e.target.getAttribute("data-id");
     
-    let newValue = this.state.value;
-    let newErrors = this.state.errors;
-
+    let {value, errors} = this.state;
     let messageError = "";
-
-    if(value === "") {
+    if(inputValue === "") {
       messageError = "Không được để trống";
     }
     else {
       for (let key in this.props.dataForm.id) {
         if(id === this.props.dataForm.id[key]) {
             let reg = this.props.dataForm.reg[key];
-            if(!value.match(reg)) {
+            if(!inputValue.match(reg)) {
                 messageError = this.props.dataForm.title[key] + this.props.dataForm.messageError[key];
-                e.target.value = value.substr(0, value.length-1);
             }
         }
       }
     }
 
-    newValue[id] = value;
-    newErrors[id] = messageError;
+    value[id] = inputValue;
+    errors[id] = messageError;
 
     this.setState({
-      value: newValue,
-      errors: newErrors
+      value,
+      errors
     }, () => {
       this.setState({
           valid: this.checkError()

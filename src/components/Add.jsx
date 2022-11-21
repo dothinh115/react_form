@@ -85,31 +85,27 @@ export default class Add extends Component {
     
     inputChangeHandle = e => {
         let id = e.target.id;
-        let value = e.target.value.trim();
-        
-        let newAdd = this.state.add;
-        let newErr = this.state.errors;
-
+        let inputValue = e.target.value.trim();
+        let {add, errors} = this.state;
         let messageError = "";
-        if(value === "") {
+        if(inputValue === "") {
             messageError = "Không được bỏ trống";
         }
         else {
             for (let key in this.props.dataForm.id) {
                 if(id === this.props.dataForm.id[key]) {
                     let reg = this.props.dataForm.reg[key];
-                    if(!value.match(reg)) {
+                    if(!inputValue.match(reg)) {
                         messageError = this.props.dataForm.title[key] + this.props.dataForm.messageError[key];
-                        e.target.value = value.substr(0, value.length-1);
                     }
                 }
             }
         }
-        newErr[id] = messageError;
-        newAdd[id] = value;
+        errors[id] = messageError;
+        add[id] = inputValue;
         this.setState({
-            add: newAdd,
-            errors: newErr
+            add,
+            errors
         }, () => {
             this.setState({
                 valid: this.checkError()
