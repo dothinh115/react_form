@@ -86,7 +86,6 @@ export default class Add extends Component {
     inputChangeHandle = e => {
         let id = e.target.id;
         let value = e.target.value.trim();
-        let valid = e.target.getAttribute("data-valid");
         
         let newAdd = this.state.add;
         let newErr = this.state.errors;
@@ -95,30 +94,15 @@ export default class Add extends Component {
         if(value === "") {
             messageError = "Không được bỏ trống";
         }
-        else if(valid === "hoten") {
-            let reg = "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
-            if(!value.match(reg)) {
-                messageError = this.props.dataForm.title[this.props.dataForm.id.indexOf(id)] + " chỉ được nhập chữ.";
-                if(value.length > 1){
-                    value = value.substr(0, value.length -1);
-                    e.target.value = value;
+        else {
+            for (let key in this.props.dataForm.id) {
+                if(id === this.props.dataForm.id[key]) {
+                    let reg = this.props.dataForm.reg[key];
+                    if(!value.match(reg)) {
+                        messageError = this.props.dataForm.title[key] + this.props.dataForm.messageError[key];
+                        e.target.value = value.substr(0, value.length-1);
+                    }
                 }
-            }
-        }
-        else if(valid === "sdt") {
-            let reg = /^[0-9]+$/;
-            if(!value.match(reg)) {
-                messageError = this.props.dataForm.title[this.props.dataForm.id.indexOf(id)] + " chỉ được điền số.";
-                if(value.length > 1){
-                    value = value.substr(0, value.length -1);
-                    e.target.value = value;
-                }
-            }
-        }
-        else if(valid === "email") {
-            let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            if(!value.match(reg)) {
-                messageError = this.props.dataForm.title[this.props.dataForm.id.indexOf(id)] + " phải đúng định dạng.";
             }
         }
         newErr[id] = messageError;
@@ -169,7 +153,6 @@ export default class Add extends Component {
                                     {dataForm.title[index]}
                                 </label>
                                 <input 
-                                data-valid={item} 
                                 className={`form-control ${this.state.errors[item] ? "is-invalid" : undefined}`} 
                                 id={item} 
                                 defaultValue={this.state.add[item]}

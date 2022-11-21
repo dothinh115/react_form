@@ -15,7 +15,13 @@ export default class Main extends Component {
 
     dataForm = {
         id: ["hoten", "sdt", "email"],
-        title: ["Họ và tên", "Số điện thoại", "Email"]
+        title: ["Họ và tên", "Số điện thoại", "Email"],
+        messageError : [" chỉ được nhập chữ.", " chỉ được nhập số.", " phải đúng định dạng"],
+        reg: [
+            "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$",
+            /^[0-9]+$/,
+            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+        ]
     }
 
     componentDidMount() {

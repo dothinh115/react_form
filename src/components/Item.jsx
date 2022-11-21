@@ -57,23 +57,16 @@ export default class Item extends Component {
     if(value === "") {
       messageError = "Không được để trống";
     }
-    else if(id === "hoten") {
-      let reg = "^[a-zA-Z_ÀÁÂÃÈÉÊẾÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶ" + "ẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợ" + "ụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
-      if(!value.match(reg)) {
-          messageError = this.props.dataForm.title[this.props.dataForm.id.indexOf(id)] + " chỉ được nhập chữ.";
+    else {
+      for (let key in this.props.dataForm.id) {
+        if(id === this.props.dataForm.id[key]) {
+            let reg = this.props.dataForm.reg[key];
+            if(!value.match(reg)) {
+                messageError = this.props.dataForm.title[key] + this.props.dataForm.messageError[key];
+                e.target.value = value.substr(0, value.length-1);
+            }
+        }
       }
-    }
-    else if(id === "sdt") {
-        let reg = /^[0-9]+$/;
-        if(!value.match(reg)) {
-            messageError = this.props.dataForm.title[this.props.dataForm.id.indexOf(id)] + " chỉ được điền số.";
-        }
-    }
-    else if(id === "email") {
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if(!value.match(reg)) {
-            messageError = this.props.dataForm.title[this.props.dataForm.id.indexOf(id)] + " phải đúng định dạng.";
-        }
     }
 
     newValue[id] = value;
