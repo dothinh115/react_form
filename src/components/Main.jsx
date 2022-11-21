@@ -76,16 +76,14 @@ export default class Main extends Component {
     //nút xóa sv
     deleteRow = masv => {
         let {data, searchRes} = this.state;
-        let newData = data.filter((item) => item.masv !== masv);
-        if(searchRes.length === 0) {
+        data = data.filter((item) => item.masv !== masv);
+        this.setState({
+            data
+        });
+        if(searchRes.length !== 0) {
+            searchRes = searchRes.filter((item) => item.masv !== masv);
             this.setState({
-                data: newData
-            });
-        }else {
-            let newSeachRes = searchRes.filter((item) => item.masv !== masv);
-            this.setState({
-                data: newData,
-                searchRes: newSeachRes
+                searchRes
             });
         }
     }
