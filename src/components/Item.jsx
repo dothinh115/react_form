@@ -39,10 +39,10 @@ export default class Item extends Component {
     const {value, errors} = this.state;
     for (let key in value) {
       if(value[key] === "" || errors[key] !== "") {
-          return false; //false == khong dat
+          return false; 
       }
     }
-    return true; //true == dat
+    return true; 
   }
 
   quickEditHandle = e => {
@@ -61,11 +61,12 @@ export default class Item extends Component {
             if(!inputValue.match(reg)) {
                 messageError = this.props.dataForm.title[key] + this.props.dataForm.messageError[key];
             }
+            else {
+              value[id] = inputValue;
+            }
         }
       }
     }
-
-    value[id] = inputValue;
     errors[id] = messageError;
 
     this.setState({
@@ -121,11 +122,15 @@ export default class Item extends Component {
       if(quickEdit.masv === mainData.masv) {
         return <div>
           <button className="btn btn-light" onClick={e => {
-            setEditFunc({
+            let resetData = {
               masv: "",
               hoten: "",
               sdt: "",
               email: ""
+            };
+            setEditFunc(resetData);
+            this.setState({
+              errors: resetData
             });
         }}>
             Hủy

@@ -22,10 +22,10 @@ export default class Add extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.state.randomUser) {
+        if (this.state.randomUser) {//khi bấm vào nút random -> randomUser: true -> thực thi code bên dưới
             this.randomInfo();
             this.setState({
-                randomUser: false
+                randomUser: false// sau khi lấy dc dữ liệu, set randomUser: false -> condition sai
             })
         }
     }
@@ -71,12 +71,7 @@ export default class Add extends Component {
     checkError = () => {
         const {add, errors} = this.state;
         for (let key in errors) {
-            if(errors[key] !== "") {
-                return false;
-            }
-        }
-        for (let key in add) {
-            if(add[key] === "") {
+            if(errors[key] !== "" || add[key] === "") {
                 return false;
             }
         }
@@ -84,31 +79,33 @@ export default class Add extends Component {
     }
     
     inputChangeHandle = e => {
-        let id = e.target.id;
-        let inputValue = e.target.value.trim();
-        let {add, errors} = this.state;
-        let messageError = "";
+        let id = e.target.id; //lấy id của trường đang điền
+        let inputValue = e.target.value.trim();// lấy value của trường đang điền
+        let {add, errors} = this.state; //móc thông tin đang có từ state
+        let messageError = ""; //Không có lỗi thì message trống
         if(inputValue === "") {
             messageError = "Không được bỏ trống";
         }
         else {
-            for (let key in this.props.dataForm.id) {
-                if(id === this.props.dataForm.id[key]) {
-                    let reg = this.props.dataForm.reg[key];
-                    if(!inputValue.match(reg)) {
-                        messageError = this.props.dataForm.title[key] + this.props.dataForm.messageError[key];
+            for (let key in this.props.dataForm.id) { //duyệt qua từng phần tử
+                if(id === this.props.dataForm.id[key]) { // nếu id của trường trùng với id ủa dataForm, ví dụ là sdt === sdt
+                    let reg = this.props.dataForm.reg[key]; // móc ra reg tương ứng của nó, reg của sdt là /^[0-9]+$/
+                    if(!inputValue.match(reg)) { // nếu nhập vào ko match
+                        messageError = this.props.dataForm.title[key] + this.props.dataForm.messageError[key];// hiển thị lỗi, lấy title + messageError
+                    }
+                    else {
+                        add[id] = inputValue;//nếu match thì cập nhật vào mảng 
                     }
                 }
             }
         }
-        errors[id] = messageError;
-        add[id] = inputValue;
-        this.setState({
+        errors[id] = messageError;//update state cho lỗi 
+        this.setState({// set dữ liệu vào state
             add,
             errors
         }, () => {
             this.setState({
-                valid: this.checkError()
+                valid: this.checkError()//sau khi set dữ liệu vào state thì tiến hành update valid
             });
         });
     }
