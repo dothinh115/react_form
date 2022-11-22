@@ -9,7 +9,7 @@ export default class Main extends Component {
     
       this.state = {
         data: [],
-        searchRes: []
+        searchArr : []
       }
     }
 
@@ -59,7 +59,7 @@ export default class Main extends Component {
         //lấy số random
         let id = getRandomId(maxNumber);
         //tìm xem trong mảng có trùng hay ko, nếu trùng thì tiếp tục gọi hàm lấy số random
-        while (this.state.data.find(item => item.masv === id) !== undefined) {
+        while (this.state.data.find(item => item.masv === id) !== undefined || id.length < 9) {
             id = getRandomId(maxNumber);
         }
         return id;
@@ -74,52 +74,54 @@ export default class Main extends Component {
         }
         data = [...data, obj];
         this.setState({
-            data,
-            searchRes: []
+            data
         });
     }
 
     //nút xóa sv
     deleteRow = masv => {
-        let {data, searchRes} = this.state;
+        let {data} = this.state;
         data = data.filter((item) => item.masv !== masv);
         this.setState({
             data
         });
-        if(searchRes.length !== 0) {
-            searchRes = searchRes.filter((item) => item.masv !== masv);
-            this.setState({
-                searchRes
-            });
-        }
     }
 
     //hàm tìm kiếm
     searchFunc = value => {
         value = value.trim().toLowerCase();
-        const {data} = this.state;
-        let searchRes = data.filter(item => item.hoten.toLowerCase().indexOf(value) !== -1);
+        let searchArr = [];
+        if(value !== "") {
+            const {data} = this.state;
+            let result = data.filter(item => item.hoten.toLowerCase().indexOf(value) !== -1);
+            result.map(item => searchArr = [...searchArr, item.masv]);
+        }
         this.setState({
-            searchRes
+            searchArr
         });
+        
+    }
+
+    searchResult = () => {
+        const {data, searchArr} = this.state;
+        let searchRes = [];
+        searchArr.map(item => {
+            let items = data.find(i => i.masv === item);
+            if(items !== undefined) {
+                searchRes = [...searchRes, data.find(i => i.masv === item)];
+            } 
+        });
+        return searchRes;
     }
 
     //hàm sửa
     quickEditFunc = obj => {
         let updateID = obj.masv;
-        if(this.state.searchRes.length !== 0) {
-            let newSearchRes = [...this.state.searchRes];
-            let find = newSearchRes.findIndex(item => item.masv === updateID);
-            newSearchRes[find] = obj;
-            this.setState({
-                searchRes: newSearchRes
-            });
-        }
-        let newData = [...this.state.data];
-        let find = newData.findIndex(item => item.masv === updateID);
-        newData[find] = obj;
+        let data = [...this.state.data];
+        let find = data.findIndex(item => item.masv === updateID);
+        data[find] = obj;
         this.setState({
-            data: newData
+            data
         });
     }
 
@@ -135,7 +137,7 @@ export default class Main extends Component {
                 />
                 <List 
                 dataForm={this.dataForm} 
-                mainData={this.state.searchRes.length !== 0 ? this.state.searchRes : this.state.data} 
+                mainData={this.searchResult().length !== 0 ? this.searchResult() : this.state.data} 
                 deleteRow={this.deleteRow}
                 quickEditFunc={this.quickEditFunc}
                 />

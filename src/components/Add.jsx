@@ -38,7 +38,6 @@ export default class Add extends Component {
         }
         //lấy số random
         let id = getRandomId(maxNumber);
-        //tìm xem trong mảng có trùng hay ko, nếu trùng thì tiếp tục gọi hàm lấy số random
         while (id.length < 11) {
             id = getRandomId(maxNumber);
         }
