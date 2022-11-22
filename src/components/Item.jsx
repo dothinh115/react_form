@@ -59,7 +59,10 @@ export default class Item extends Component {
             let reg = this.props.dataForm.reg[key];
             if(!inputValue.match(reg)) {
                 messageError = this.props.dataForm.title[key] + this.props.dataForm.messageError[key];
-            }
+                if(key != 2) {
+                  e.target.value = inputValue.substr(0, inputValue.length -1);
+                }
+              }
             else {
               value[id] = inputValue;
             }
@@ -149,7 +152,7 @@ export default class Item extends Component {
   }
 
   render() {
-    const {mainData, dataForm, deleteRow, quickEdit, setEditFunc} = this.props;  
+    const {mainData, dataForm, quickEdit} = this.props;  
 
     return (
       <tr>

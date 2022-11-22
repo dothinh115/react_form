@@ -92,6 +92,9 @@ export default class Add extends Component {
                     let reg = this.props.dataForm.reg[key]; // móc ra reg tương ứng của nó, reg của sdt là /^[0-9]+$/
                     if(!inputValue.match(reg)) { // nếu nhập vào ko match
                         messageError = this.props.dataForm.title[key] + this.props.dataForm.messageError[key];// hiển thị lỗi, lấy title + messageError
+                        if(key != 2) {
+                            e.target.value = inputValue.substr(0, inputValue.length -1);
+                        }
                     }
                     else {
                         add[id] = inputValue;//nếu match thì cập nhật vào mảng 
