@@ -151,6 +151,7 @@ export default class Add extends Component {
                                 className={`form-control ${this.state.errors[item] ? "is-invalid" : undefined}`} 
                                 id={item} 
                                 defaultValue={this.state.add[item]}
+                                placeholder={dataForm.placeHolder[index]}
                                 onChange={this.inputChangeHandle} 
                                 />
                                 {this.state.errors[item] ? <div className="invalid-feedback">{this.state.errors[item]}</div> : undefined}
