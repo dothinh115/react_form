@@ -87,17 +87,18 @@ export default class Add extends Component {
         }
         else {
             for (let key in this.props.dataForm.id) { //duyệt qua từng phần tử
-                if(id === this.props.dataForm.id[key]) { // nếu id của trường trùng với id ủa dataForm, ví dụ là sdt === sdt
-                    let reg = this.props.dataForm.reg[key]; // móc ra reg tương ứng của nó, reg của sdt là /^[0-9]+$/
-                    if(!inputValue.match(reg)) { // nếu nhập vào ko match
-                        messageError = this.props.dataForm.title[key] + this.props.dataForm.messageError[key];// hiển thị lỗi, lấy title + messageError
-                        if(key != 2) {
-                            e.target.value = inputValue.substr(0, inputValue.length -1);
+                switch(id) {
+                    case this.props.dataForm.id[key]:
+                        let reg = this.props.dataForm.reg[key]; // móc ra reg tương ứng của nó, reg của sdt là /^[0-9]+$/
+                        if(!inputValue.match(reg)) { // nếu nhập vào ko match
+                            messageError = this.props.dataForm.title[key] + this.props.dataForm.messageError[key];// hiển thị lỗi, lấy title + messageError
+                            if(key != 2) {
+                                e.target.value = inputValue.substr(0, inputValue.length -1);
+                            }
                         }
-                    }
-                    else {
-                        add[id] = inputValue;//nếu match thì cập nhật vào mảng 
-                    }
+                        else {
+                            add[id] = inputValue;//nếu match thì cập nhật vào mảng 
+                        }  
                 }
             }
         }

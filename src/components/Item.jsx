@@ -54,20 +54,21 @@ export default class Item extends Component {
       messageError = "Không được để trống";
     }
     else {
-      for (let key in this.props.dataForm.id) {
-        if(id === this.props.dataForm.id[key]) {
-            let reg = this.props.dataForm.reg[key];
-            if(!inputValue.match(reg)) {
-                messageError = this.props.dataForm.title[key] + this.props.dataForm.messageError[key];
+      for (let key in this.props.dataForm.id) { //duyệt qua từng phần tử
+        switch(id) {
+          case this.props.dataForm.id[key]:
+            let reg = this.props.dataForm.reg[key]; // móc ra reg tương ứng của nó, reg của sdt là /^[0-9]+$/
+            if(!inputValue.match(reg)) { // nếu nhập vào ko match
+                messageError = this.props.dataForm.title[key] + this.props.dataForm.messageError[key];// hiển thị lỗi, lấy title + messageError
                 if(key != 2) {
-                  e.target.value = inputValue.substr(0, inputValue.length -1);
+                    e.target.value = inputValue.substr(0, inputValue.length -1);
                 }
-              }
-            else {
-              value[id] = inputValue;
             }
+            else {
+                value[id] = inputValue;//nếu match thì cập nhật vào mảng 
+            }  
         }
-      }
+    }
     }
     errors[id] = messageError;
 

@@ -38,7 +38,7 @@ export default class List extends Component {
       }
     }
   }
-
+  
   setEditFunc = newObj => {
     this.setState({
       ...newObj

@@ -9,7 +9,7 @@ export default class Main extends Component {
     
       this.state = {
         data: [],
-        searchArr : []
+        search: ""
       }
     }
 
@@ -64,7 +64,7 @@ export default class Main extends Component {
         //lấy số random
         let id = getRandomId(maxNumber);
         //tìm xem trong mảng có trùng hay ko, nếu trùng thì tiếp tục gọi hàm lấy số random
-        while (this.state.data.find(item => item.masv === id) !== undefined || id.length < 9) {
+        while (this.state.data.find(item => item.masv === id) !== undefined || id.length <= 9) {
             id = getRandomId(maxNumber);
         }
         return id;
@@ -93,29 +93,16 @@ export default class Main extends Component {
     }
 
     //hàm tìm kiếm
-    searchFunc = value => {
-        value = value.trim().toLowerCase();
-        let searchArr = [];
-        if(value !== "") {
-            const {data} = this.state;
-            let result = data.filter(item => item.hoten.toLowerCase().indexOf(value) !== -1);
-            result.map(item => searchArr = [...searchArr, item.masv]);
-        }
+    searchFunc = search => {
+        search = search.trim().toLowerCase();
         this.setState({
-            searchArr
+            search
         });
-        
     }
 
     searchResult = () => {
-        const {data, searchArr} = this.state;
-        let searchRes = [];
-        searchArr.map(item => {
-            let items = data.find(i => i.masv === item);
-            if(items !== undefined) {
-                searchRes = [...searchRes, data.find(i => i.masv === item)];
-            } 
-        });
+        const {data, search} = this.state;
+        let searchRes = data.filter(item => item.hoten.toLowerCase().indexOf(search) !== -1);
         return searchRes;
     }
 
